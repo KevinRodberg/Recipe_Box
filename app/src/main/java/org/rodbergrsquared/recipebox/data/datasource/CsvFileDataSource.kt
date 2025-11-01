@@ -12,7 +12,7 @@ import java.io.InputStreamReader
  *      @param context The application context.
  */
 class CsvFileDataSource(private val context: Context) {
-    /** Loads recipe categories from a CSV file.
+    /** Loads recipe categories from the first CSV file.
      *      @param uri The URI of the CSV file.
      *      @return A list of recipe categories.
      *      @throws Exception If there is an error reading the CSV file.
@@ -50,7 +50,7 @@ class CsvFileDataSource(private val context: Context) {
         return recipeList
     }
 
-    /** Loads recipe entries from a CSV file.
+    /** Loads recipe entries from the second CSV file.
      *      @param uri The URI of the CSV file.
      *      @return A list of recipe entries.
      *      @throws Exception If there is an error reading the CSV file.

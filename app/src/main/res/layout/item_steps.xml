@@ -7,5 +7,5 @@
     android:paddingEnd="8dp"
     android:paddingTop="2dp"
     android:paddingBottom="2dp"
-    android:text="Step instruction goes here"
+    android:text="@string/recipe_step"
     android:textSize="12sp" />

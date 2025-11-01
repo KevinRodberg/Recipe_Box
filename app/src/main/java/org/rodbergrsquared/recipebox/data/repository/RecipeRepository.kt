@@ -8,6 +8,9 @@ import org.rodbergrsquared.recipebox.data.model.FullRecipe
 import org.rodbergrsquared.recipebox.data.model.Recipe
 import org.rodbergrsquared.recipebox.data.model.RecipeEntry
 
+/**
+ * Repository for recipes and recipe entries.
+ */
 class RecipeRepository(context: Context) {
 
     private val csvDataSource = CsvFileDataSource(context)
@@ -15,12 +18,17 @@ class RecipeRepository(context: Context) {
     private var entries: List<RecipeEntry> = emptyList()
     private var useStaticData = true
 
+    // Load static data by default when the repository is created.
     init {
-        // Load static data by default when the repository is created.
         recipes = StaticRecipeLoader.recipes
         entries = StaticRecipeLoader.entries
     }
 
+    /** Load recipe lists and detailed entries from CSV files.
+     *      @param recipeUri The URI of the CSV file containing recipe data.
+     *      @param entryUri The URI of the CSV file containing detailed entry data.
+     *      @return True if the data was loaded successfully, false otherwise.
+     */
     fun loadDataFromCsv(recipeUri: Uri, entryUri: Uri): Boolean {
         return try {
             // Load into temporary lists first. This is safer.
@@ -43,6 +51,9 @@ class RecipeRepository(context: Context) {
         }
     }
 
+    /**  Getters for recipes headers only.
+     *      @return A list of FullRecipe objects representing the recipes.
+     */
     fun getRecipeHeaders(): List<FullRecipe> {
         val recipeSource = if (useStaticData) StaticRecipeLoader.recipes else recipes
         return recipeSource.map { recipe ->
@@ -50,10 +61,17 @@ class RecipeRepository(context: Context) {
         }
     }
 
+    /**  Getters for a single recipe by ID.
+     *      @param id The ID of the recipe to retrieve.
+     *      @return A list of FullRecipe objects representing a single recipe.
+     */
     fun getRecipeById(id: Int): FullRecipe? {
         return getFullRecipes().find { it.recipe.id == id }
     }
 
+    /**  Getters for detailed recipes and entries.
+     *      @return A list of RecipeEntry objects representing detailed entries.
+     */
     fun getFullRecipes(): List<FullRecipe> {
         val recipeSource = if (useStaticData) StaticRecipeLoader.recipes else recipes
         val entrySource = if (useStaticData) StaticRecipeLoader.entries else entries

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.rodbergrsquared.recipebox.R
 import org.rodbergrsquared.recipebox.data.model.RecipeEntry
 
+/** Adapter provides separate view holders for ingredients and
+ * instruction steps with separate layouts.  */
 class IngredientAdapter(private val entries: List<RecipeEntry>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() { // Changed to generic ViewHolder
 
@@ -25,8 +27,7 @@ class IngredientAdapter(private val entries: List<RecipeEntry>) :
             val instruction: TextView = itemView.findViewById(R.id.stepInstruction)
     }
 
-    // This function tells the adapter which layout to use
-    // for each position.
+    // Tells the adapter which layout to use for each item position.
     override fun getItemViewType(position: Int): Int {
         return if (entries[position].units.equals("step",
                 ignoreCase = true)) {
@@ -36,7 +37,7 @@ class IngredientAdapter(private val entries: List<RecipeEntry>) :
         }
     }
 
-    // This function now inflates the correct layout based on the viewType.
+    // Inflates the correct layout based on the viewType.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEWTYPEINGREDIENT) {
             val view = LayoutInflater.from(parent.context)
@@ -49,7 +50,7 @@ class IngredientAdapter(private val entries: List<RecipeEntry>) :
         }
     }
 
-    // This function now binds data to the correct ViewHolder type.
+    // Binds data to the correct ViewHolder type.
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val entry = entries[position]
         when (holder.itemViewType) {

@@ -24,12 +24,14 @@ class MainActivity : AppCompatActivity(), OnRecipeClickListener {
     private var recipeFileUri: Uri? = null
     private var entryFileUri: Uri? = null
 
+    // Dictates whether the UI is in detail view or not.
     private var isDetailView = false
 
-    private val openRecipeFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    private val openRecipeFileLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
             recipeFileUri = it
-            Toast.makeText(this, "Recipes file selected. Now select the entries file.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "@striing/open_recipe_toast", Toast.LENGTH_SHORT).show()
             openEntryFileLauncher.launch(arrayOf("*/*"))
         }
     }
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity(), OnRecipeClickListener {
         recyclerView.adapter = adapter
     }
 
+    // Display data loaded from CSV files.
     private fun loadAndDisplayData() {
         if (recipeFileUri != null && entryFileUri != null) {
             // The repository now returns true for success and false for failure.
@@ -89,6 +92,8 @@ class MainActivity : AppCompatActivity(), OnRecipeClickListener {
         }
     }
 
+    // Show the list of recipe headers which provide a list
+    // selectable items to click on.
     private fun showRecipeHeaders() {
         val recipeHeaders = recipeRepository.getRecipeHeaders()
         adapter.updateData(recipeHeaders)
@@ -98,6 +103,8 @@ class MainActivity : AppCompatActivity(), OnRecipeClickListener {
         printFab.visibility = View.GONE
     }
 
+    // Handle clicks on recipe headers in the list
+    // providing the id to get the recipe detail
     override fun onRecipeSelected(recipeId: Int) {
         val selectedRecipe = recipeRepository.getRecipeById(recipeId)
         if (selectedRecipe != null) {

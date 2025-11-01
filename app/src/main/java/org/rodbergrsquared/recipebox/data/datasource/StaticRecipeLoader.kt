@@ -4,11 +4,12 @@ import org.rodbergrsquared.recipebox.data.model.*
 
 /** Static recipe loader */
 object StaticRecipeLoader {
+    // Demo List of Recipes
     val recipes = listOf(
         Recipe(1, "Demo", "Chocolate Chip Oatmeal Cookies", "Demonstration"),
         Recipe(2, "Demo", "Pie Crust", "Demonstration")
     )
-
+    // Demo List of Recipe Entries
     val entries = listOf(
         RecipeEntry(1, 1, "1", "cup", "flour", ""),
         RecipeEntry(1, 2, "2", "step", "Mix dry ingredients", ""),
