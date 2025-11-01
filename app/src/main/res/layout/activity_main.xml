@@ -8,23 +8,49 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/loadCsvButton"
+        android:id="@+id/topActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Load Recipes from CSV"
+        android:text="@string/btn_csv_load"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipeRecyclerView"
+    <!-- This FrameLayout correctly fills the space below the button -->
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loadCsvButton" />
+        app:layout_constraintTop_toBottomOf="@+id/topActionButton">
+
+        <!--
+            CORRECTION:
+            The RecyclerView is inside a FrameLayout, so it should use
+            match_parent to fill the frame. All the app:layout_* attributes
+            have been removed as they are invalid here.
+        -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recipeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/printFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/print_recipe"
+            android:src="@drawable/ic_print"
+            android:visibility="gone"
+            app:fabSize="normal"
+            tools:visibility="visible" /> <!-- tools:visibility makes it visible in the preview -->
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

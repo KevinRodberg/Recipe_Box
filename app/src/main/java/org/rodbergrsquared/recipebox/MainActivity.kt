@@ -2,44 +2,41 @@ package org.rodbergrsquared.recipebox
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.rodbergrsquared.recipebox.data.repository.RecipeRepository
+import org.rodbergrsquared.recipebox.ui.OnRecipeClickListener
 import org.rodbergrsquared.recipebox.ui.RecipeAdapter
-import org.rodbergrsquared.recipebox.data.RecipeRepository
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnRecipeClickListener {
 
     private lateinit var recipeRepository: RecipeRepository
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecipeAdapter
+    private lateinit var topActionButton: Button
+    private lateinit var printFab: FloatingActionButton
 
     private var recipeFileUri: Uri? = null
     private var entryFileUri: Uri? = null
 
-    private val openRecipeFileLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+    private var isDetailView = false
+
+    private val openRecipeFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
             recipeFileUri = it
-            Toast.makeText(this,
-                "Recipes file selected. Now select entries file.",
-                Toast.LENGTH_LONG).show()
-            // After picking the first file,
-            // immediately launch the picker for the second file.
+            Toast.makeText(this, "Recipes file selected. Now select the entries file.", Toast.LENGTH_SHORT).show()
             openEntryFileLauncher.launch(arrayOf("*/*"))
         }
     }
 
-    private val openEntryFileLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+    private val openEntryFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
             entryFileUri = it
-            // Now that we have both files, we can process them.
             loadAndDisplayData()
         }
     }
@@ -49,40 +46,66 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         recipeRepository = RecipeRepository(this)
-        setupRecyclerView()
-        val loadButton = findViewById<Button>(R.id.loadCsvButton)
 
-        loadButton.setOnClickListener {
-            // Start the file picking process for the first file (recipes.csv)
-            recipeFileUri = null
-            entryFileUri = null
-            openRecipeFileLauncher.launch(arrayOf("*/*")) // We want any file type
+        topActionButton = findViewById(R.id.topActionButton)
+        printFab = findViewById(R.id.printFab)
+
+        setupRecyclerView()
+
+        topActionButton.setOnClickListener {
+            if (isDetailView) {
+                showRecipeHeaders()
+            } else {
+                recipeFileUri = null
+                entryFileUri = null
+                openRecipeFileLauncher.launch(arrayOf("*/*"))
+            }
         }
+
+        // Load the initial static data on startup.
+        showRecipeHeaders()
     }
 
     private fun setupRecyclerView() {
-        recyclerView = findViewById(R.id.recipeRecyclerView)
+        val recyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        // Start with an empty adapter
-        adapter = RecipeAdapter(emptyList())
+        adapter = RecipeAdapter(emptyList(), this)
         recyclerView.adapter = adapter
     }
 
     private fun loadAndDisplayData() {
         if (recipeFileUri != null && entryFileUri != null) {
-            // Tell the repository to load data from the selected files
-            recipeRepository.loadDataFromCsv(
-                recipeFileUri!!, entryFileUri!!)
-
-            // Get the newly loaded and combined recipes
-            val recipeList = recipeRepository.getFullRecipes()
-
-            // Update the adapter's data and notify it to refresh the UI
-            adapter.updateData(recipeList)
-
-            Toast.makeText(this, "Successfully loaded ${recipeList.size} recipes!", Toast.LENGTH_SHORT).show()
+            // The repository now returns true for success and false for failure.
+            val success = recipeRepository.loadDataFromCsv(recipeFileUri!!, entryFileUri!!)
+            if (success) {
+                Toast.makeText(this, "Successfully loaded recipes from CSV!", Toast.LENGTH_SHORT).show()
+                showRecipeHeaders() // Refresh the UI with the new data.
+            } else {
+                // If loading failed, inform the user and remain on the static data.
+                Toast.makeText(this, "Could not load CSV data. Please check the files.", Toast.LENGTH_LONG).show()
+            }
         } else {
             Toast.makeText(this, "Could not load files.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showRecipeHeaders() {
+        val recipeHeaders = recipeRepository.getRecipeHeaders()
+        adapter.updateData(recipeHeaders)
+
+        isDetailView = false
+        topActionButton.text = getString(R.string.btn_csv_load)
+        printFab.visibility = View.GONE
+    }
+
+    override fun onRecipeSelected(recipeId: Int) {
+        val selectedRecipe = recipeRepository.getRecipeById(recipeId)
+        if (selectedRecipe != null) {
+            adapter.updateData(listOf(selectedRecipe))
+
+            isDetailView = true
+            topActionButton.text = getString(R.string.back_to_list)
+            printFab.visibility = View.GONE // Keep print disabled.
         }
     }
 }

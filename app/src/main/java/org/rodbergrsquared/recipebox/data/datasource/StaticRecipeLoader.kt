@@ -2,10 +2,11 @@ package org.rodbergrsquared.recipebox.data.datasource
 
 import org.rodbergrsquared.recipebox.data.model.*
 
+/** Static recipe loader */
 object StaticRecipeLoader {
     val recipes = listOf(
-        Recipe(1, "Cookies", "Chocolate Chip Oatmeal Cookies", "Kevin Rodberg"),
-        Recipe(2, "Pastry", "Pie Crust", "Alton Brown")
+        Recipe(1, "Demo", "Chocolate Chip Oatmeal Cookies", "Demonstration"),
+        Recipe(2, "Demo", "Pie Crust", "Demonstration")
     )
 
     val entries = listOf(

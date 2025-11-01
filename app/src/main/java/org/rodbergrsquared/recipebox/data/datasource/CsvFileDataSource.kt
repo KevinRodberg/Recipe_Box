@@ -7,7 +7,16 @@ import org.rodbergrsquared.recipebox.data.model.Recipe
 import org.rodbergrsquared.recipebox.data.model.RecipeEntry
 import java.io.InputStreamReader
 
+/** Provides access to the CSV data source.
+ *      @constructor Creates a new instance of the CSV data source.
+ *      @param context The application context.
+ */
 class CsvFileDataSource(private val context: Context) {
+    /** Loads recipe categories from a CSV file.
+     *      @param uri The URI of the CSV file.
+     *      @return A list of recipe categories.
+     *      @throws Exception If there is an error reading the CSV file.
+     */
     fun loadRecipes(uri: Uri): List<Recipe> {
         val recipeList = mutableListOf<Recipe>()
         try {
@@ -41,6 +50,11 @@ class CsvFileDataSource(private val context: Context) {
         return recipeList
     }
 
+    /** Loads recipe entries from a CSV file.
+     *      @param uri The URI of the CSV file.
+     *      @return A list of recipe entries.
+     *      @throws Exception If there is an error reading the CSV file.
+     */
     fun loadEntries(uri: Uri): List<RecipeEntry> {
         val entryList = mutableListOf<RecipeEntry>()
         try {

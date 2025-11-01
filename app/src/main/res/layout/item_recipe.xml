@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/recipeName"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe Name"
+        android:text="@string/recipe_name"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/recipeCategory"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/recipeCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recipe_category"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/recipeCredit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recipe_credit"
+            android:textColor="#212677"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ingredientsRecyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Category"
-        android:textColor="#666666"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/recipeName"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="4dp"
+        android:nestedScrollingEnabled="false"
+        tools:listitem="@layout/item_ingredient" />
 
-    <TextView
-        android:id="@+id/recipeCredit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Credit"
-        android:textColor="#999999"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/recipeName"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/entriesPreviewTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Preview"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/recipeCategory"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

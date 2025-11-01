@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Recipe Box</string>
+    <string name="recipe_preview">Recipe Preview</string>
+    <string name="recipe_credit">Credits</string>
+    <string name="recipe_category">Category</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="btn_csv_load">Import Recipe from CSVs</string>
+    <string name="item_units">1 Tablespoon</string>
+    <string name="item_name">All purpose flour</string>
+    <string name="print_recipe">Print Recipe</string>
+    <string name="back_to_list">Back to Recipe List</string>
 </resources>

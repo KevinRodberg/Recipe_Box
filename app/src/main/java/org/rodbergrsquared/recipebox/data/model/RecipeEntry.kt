@@ -1,5 +1,6 @@
 package org.rodbergrsquared.recipebox.data.model
 
+/** Recipe detail information */
 data class RecipeEntry(
     val recipeId: Int,
     val cardIndex: Int,
